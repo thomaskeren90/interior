@@ -26,11 +26,27 @@ npx vercel --yes
 - Got API key
 - Added to Vercel environment variables:
 ```bash
-npx vercel env add STABILITY_API_KEY
-# Selected: Preview
+npx vercel env add STABILITY_API_KEY production
+# Mark as sensitive: yes
+# Paste key when prompted
 ```
 - Redeployed:
 ```bash
+npx vercel --prod
+```
+
+### 4. Fixed SDXL Dimension Error (April 9, 2026)
+- **Problem:** Images not generating — app returned placeholder SVGs
+- **Root cause:** SDXL API rejects `1024x768` and `768x1024` dimensions
+- **Fix:** Changed to valid SDXL dimensions in `src/app/api/generate/route.ts`:
+  - Landscape: `1344x768` (was `1024x768`)
+  - Portrait: `640x1536` (was `768x1024`)
+- **Valid SDXL dimensions:** 1024x1024, 1152x896, 1216x832, 1344x768, 1536x640, 640x1536
+
+### How to Redeploy After Code Changes:
+```bash
+cd ~/interior
+git pull
 npx vercel --prod
 ```
 
@@ -49,3 +65,4 @@ npx vercel --prod
 - Cloud Run was not used because billing was not enabled for the new project
 - Vercel was used as free alternative — works perfectly
 - `interior-ai-makmur45` project was created but has no billing linked
+- **Important:** Rotate GitHub PAT and Stability API key if they were ever shared in chat

@@ -11,9 +11,10 @@ export async function POST(request: NextRequest) {
     }
 
     const fullPrompt = generatePrompt(roomType, style, mode, customPrompt);
+    // SDXL only supports specific dimensions: 1024x1024, 1152x896, 1216x832, 1344x768, 1536x640, 640x1536
     const dimensions = orientation === 'portrait' 
-      ? { width: 768, height: 1024 } 
-      : { width: 1024, height: 768 };
+      ? { width: 640, height: 1536 } 
+      : { width: 1344, height: 768 };
 
     const results = [];
 
